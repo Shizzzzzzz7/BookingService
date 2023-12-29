@@ -23,7 +23,7 @@ const createChannel = async()=>{
 const subscribeMessage = async(channel, service, binding_key)=>{
     try {
         //ensures that a queue exists on the channel
-        const applicationQueue = await channel.assertQueue('QUEUE_NAME');
+        const applicationQueue = await channel.assertQueue('REMAINDER_QUEUE');
         //bind a queue to an exchange on a channel in RabbitMQ
         //which queue to choose to send msg
         channel.bindQueue(applicationQueue.queue, EXCHANGE_NAME, binding_key);
@@ -40,7 +40,7 @@ const subscribeMessage = async(channel, service, binding_key)=>{
 
 const publishMessage = async(channel, binding_key, message)=>{
     try {
-        await channel.assertQueue('QUEUE_NAME');
+        await channel.assertQueue('REMAINDER_QUEUE');
         await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
     } catch (error) {
         throw error;
